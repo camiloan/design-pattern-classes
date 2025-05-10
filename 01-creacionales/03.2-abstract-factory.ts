@@ -12,20 +12,22 @@
  * https://refactoring.guru/es/design-patterns/abstract-factory
  */
 
+import { COLORS } from "../helpers/colors";
+
 /**
  * !Instrucciones:
- 	1.Completen las Clases de Productos:
+    1.Completen las Clases de Productos:
     •	ElectricCar debe implementar Vehicle y mostrar el mensaje "Ensamblando un auto eléctrico".
     •	GasCar debe implementar Vehicle y mostrar el mensaje "Ensamblando un auto de combustión".
     •	ElectricEngine debe implementar Engine y mostrar el mensaje "Arrancando motor eléctrico".
     •	GasEngine debe implementar Engine y mostrar el mensaje "Arrancando motor de combustión".
 
-	2.	Completen las Clases de Fábricas:
+  2.	Completen las Clases de Fábricas:
     •	ElectricVehicleFactory debe crear un ElectricCar y un ElectricEngine.
     •	GasVehicleFactory debe crear un GasCar y un GasEngine.
 
-	3. Prueben el Código:
-	  •	Ejecuten el código para asegurarse de que cada fábrica produce el tipo correcto de vehículo y motor.
+  3. Prueben el Código:
+    •	Ejecuten el código para asegurarse de que cada fábrica produce el tipo correcto de vehículo y motor.
 
  */
 // 1. Interfaces de Vehicle y Engine
@@ -39,24 +41,32 @@ interface Engine {
 
 // 2. Clases Concretas de Productos
 
-class ElectricCar {
-  // Implementación del método assemble
-  // 'Ensamblando un auto eléctrico'
+class ElectricCar implements Vehicle {
+  assemble(): void {
+    console.log('%cEnsamblando un auto eléctrico', COLORS.green)
+  }
+
 }
 
 class GasCar {
   // Implementación del método assemble
-  // 'Ensamblando un auto de combustión'
+  assemble(): void {
+    console.log('%cEnsamblando un auto de combustión', COLORS.red)
+  }
 }
 
-class ElectricEngine {
+class ElectricEngine implements Engine {
   // Implementación del método start
-  // 'Arrancando motor eléctrico'
+  start(): void {
+    console.log('%cArrancando motor eléctrico', COLORS.green)
+  }
 }
 
 class GasEngine {
   // Implementación del método start
-  // 'Arrancando motor de combustión'
+  start(): void {
+    console.log('%cArrancando motor de combustión', COLORS.red)
+  }
 }
 
 // 3. Interfaz de la Fábrica Abstracta
@@ -69,11 +79,22 @@ interface VehicleFactory {
 // 4. Clases Concretas de Fábricas
 
 class ElectricVehicleFactory implements VehicleFactory {
-  // Implementación de los métodos createVehicle y createEngine
+  createVehicle(): Vehicle {
+    return new ElectricCar()
+  }
+  createEngine(): Engine {
+    return new ElectricEngine()
+  }
 }
 
 class GasVehicleFactory implements VehicleFactory {
-  // Implementación de los métodos createVehicle y createEngine
+  createEngine(): Engine {
+    return new GasEngine()
+
+  }
+  createVehicle(): Vehicle {
+    return new GasCar()
+  }
 }
 
 // 5. Código Cliente
