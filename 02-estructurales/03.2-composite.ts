@@ -33,7 +33,7 @@ class MenuItem implements MenuComponent {
     this.price = price;
   }
 
-  showDetails(indent: string = ''): void {
+  showDetails(indent = ''): void {
     console.log(
       `${indent}- ${this.name}: %c$${this.price.toFixed(2)}`,
       COLORS.green
@@ -48,15 +48,29 @@ class MenuCategory implements MenuComponent {
   // Name sting y items arreglo de MenuComponent
   // Name es recibida en el constructor, items se inicializa como un arreglo vacío
 
-  //TODO: Sobrecarga de operadores - Item puede ser MenuComponent o un arreglo de MenuComponent
-  add(item: unknown): void {
-    // TODO: Implementar la sobrecarga de operadores
-    throw new Error('Method not implemented.');
+  private name: string;
+  private items: MenuComponent[] = []
+
+  constructor(name: string) {
+    this.name = name
   }
 
-  showDetails(indent: string = ''): void {
+  //TODO: Sobrecarga de operadores - Item puede ser MenuComponent o un arreglo de MenuComponent
+  add(item: MenuComponent | MenuComponent[]): void {
+    // TODO: Implementar la sobrecarga de operadores
+    if (Array.isArray(item)) {
+      this.items.push(...item)
+      return;
+    }
+    this.items.push(item)
+  }
+
+  showDetails(indent = ''): void {
     console.log(`%c${indent}+ ${this.name}`, COLORS.blue);
     // TODO: Implementar foreach
+
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    this.items.forEach(item => item.showDetails(`${indent} `))
   }
 }
 
@@ -71,6 +85,7 @@ function main() {
   const soda = new MenuItem('Refresco', 2.5);
   const dessert = new MenuItem('Pastel de chocolate', 6.5);
   const coffee = new MenuItem('Café', 1.99);
+  const te = new MenuItem('Te', 0.99);
 
   // Crear categorías de menú y añadir ítems
   const appetizers = new MenuCategory('Entradas');
@@ -81,8 +96,14 @@ function main() {
   mainCourse.add(steak);
 
   const beverages = new MenuCategory('Bebidas');
-  beverages.add(soda);
-  beverages.add(coffee);
+  const hotBeverages = new MenuCategory('Calientes')
+  const coldBeverages = new MenuCategory('Frías')
+  beverages.add([hotBeverages, coldBeverages])
+
+  coldBeverages.add(soda);
+  hotBeverages.add(coffee);
+  hotBeverages.add(te)
+
 
   const desserts = new MenuCategory('Postres');
   desserts.add(dessert);
