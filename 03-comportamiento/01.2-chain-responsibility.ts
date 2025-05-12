@@ -32,11 +32,11 @@ abstract class BaseApprover implements Approver {
     if (this.nextApprover) {
       this.nextApprover.approveRequest(amount);
       return;
-    } 
-    
-    
+    }
+
+
     console.log('Solicitud no pudo ser aprobada.');
-    
+
   }
 }
 
@@ -44,9 +44,15 @@ abstract class BaseApprover implements Approver {
 
 class Supervisor extends BaseApprover {
   // TODO: Implementar el método approveRequest si el monto es menor o igual a 1000
+
   // TODO: Si el monto es mayor a 1000, pasar la solicitud al siguiente aprobador
   override approveRequest(amount: number): void {
-    throw new Error('Method not implemented.');
+    if (amount <= 1000) {
+      console.log(`Supervisor: %cAprueba el compra de ${amount}`, COLORS.green)
+      return;
+    }
+    console.log('Supervisor: Delega la solicitud al Manager');
+    super.next(amount)
   }
 }
 
@@ -55,19 +61,34 @@ class Manager extends BaseApprover {
   // TODO: Si el monto es mayor a 5000, pasar la solicitud al siguiente aprobador
 
   override approveRequest(amount: number): void {
-    throw new Error('Method not implemented.');
+    if (amount <= 5000) {
+      console.log(`Manager: %cAprueba la compra de ${amount}`, COLORS.purple)
+      return;
+    }
+    console.log('Manager: Delega la solicitud al Director');
+    super.next(amount)
   }
 }
 
 class Director extends BaseApprover {
   // TODO: Implementar el método approveRequest si el monto
+
+  override approveRequest(amount: number): void {
+    if (amount > 5000) {
+      console.log(`Manager: %cAprueba la compra de ${amount}`, COLORS.blue)
+      return;
+    }
+  }
 }
 
 // 4. Código Cliente para probar la cadena de responsabilidad
 
 function main() {
+  // Supervisor: <= 1000
   const supervisor = new Supervisor();
+  // Manager: <= 5000
   const manager = new Manager();
+  // Director: >5000
   const director = new Director();
 
   // Configurar la cadena de responsabilidad
