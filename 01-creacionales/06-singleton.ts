@@ -10,7 +10,7 @@
  * https://refactoring.guru/es/design-patterns/singleton
  */
 
-import { COLORS } from "../helpers/colors";
+import { COLORS } from "../helpers/colors.ts";
 
 class DragonBalls {
     private static instance: DragonBalls;

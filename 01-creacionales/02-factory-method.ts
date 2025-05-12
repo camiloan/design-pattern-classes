@@ -13,7 +13,7 @@
  *
  */
 
-import { COLORS } from "../helpers/colors"
+import { COLORS } from "../helpers/colors.ts"
 
 interface Hamburger {
     prepare(): void

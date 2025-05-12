@@ -8,7 +8,7 @@
  *
  */
 
-import { COLORS } from "../helpers/colors"
+import { COLORS } from "../helpers/colors.ts"
 
 
 type Language = 'es' | 'en' | 'fr'
