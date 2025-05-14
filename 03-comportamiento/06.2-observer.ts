@@ -29,6 +29,7 @@ class WeatherStation {
   // Agregar un Observer
   subscribe(observer: Observer): void {
     this.observers.push(observer)
+    // Cada vez que haya una nueva subscripción se notifica
     // observer.update(this.weatherData)
     console.log(
       '%cNueva aplicación suscrita al sistema meteorológico.',
